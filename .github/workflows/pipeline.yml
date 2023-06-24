@@ -35,9 +35,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         
       - name: Docker Login
-        run: | 
-          echo '${{ secrets.GOOGLE_CREDENTIALS }}' > key.json
-          cat key.json | docker login -u _json_key --password-stdin '${{ vars.GOOGLE_ARTIFACT }}'
+        uses: docker/login-action@v2
+        with:
+          registry: gcr.io
+          username: _json_key
+          password: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: Build & Push Image
         run: | 
